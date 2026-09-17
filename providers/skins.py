@@ -5,9 +5,6 @@ from prayoadmii_lib import console
 from providers.geyser import resolve_geyser_url
 from providers.mojang import resolve_mojang_url
 
-import config
-
-
 def resolve_skin_url(username: str):
     console.log(f"Resolving Skin For: {username}")
 

@@ -6,6 +6,7 @@ import importlib
 
 from pathlib import Path
 from prayoadmii_lib import console
+from prayoadmii_lib.configlib import tomlcfg
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import Response, RedirectResponse
 
@@ -13,9 +14,9 @@ from renderer.head18 import render_head
 
 from providers import skins
 
-import config
-
 subprocess.run(args="cls" if os.name == "nt" else "clear", shell=True)
+
+configs = tomlcfg.load("config.toml")
 
 BASE_DIR = Path(__file__).resolve().parent
 _LOADED_MODULES = set()
@@ -121,6 +122,6 @@ def get_head(username: str, mode: str = Query(default=None)):
 if __name__ == "__main__":
     uvicorn.run(
         app=app,
-        host=str(config.host),
-        port=int(config.port)
+        host=str(configs.get_config("web.bind", "0.0.0.0")),
+        port=int(configs.get_config("web.port", 7500))
     )
