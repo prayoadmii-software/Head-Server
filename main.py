@@ -7,12 +7,7 @@ import importlib
 from pathlib import Path
 from prayoadmii_lib import console
 from prayoadmii_lib.configlib import tomlcfg
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import Response, RedirectResponse
-
-from renderer.head18 import render_head
-
-from providers import skins
+from fastapi import FastAPI
 
 subprocess.run(args="cls" if os.name == "nt" else "clear", shell=True)
 
@@ -66,58 +61,6 @@ def LoadModules(app: FastAPI, project_base_dir: Path, base_path: str):
                 console.warn(f"Failed To Load {module_path} As: {e}")
 
 LoadModules(app, BASE_DIR, "endpoints")
-
-@app.get("/{username}.png")
-def get_head(username: str, mode: str = Query(default=None)):
-    skin_mode = (
-        mode
-        if mode is not None
-        else config.default_skin_mode
-    ).lower()
-
-    if skin_mode not in (
-        "head",
-        "head-1-8"
-    ):
-        raise HTTPException(
-            status_code=400,
-            detail=f"Unsupported Skin Mode: {skin_mode}"
-        )
-
-    skin_url = skins.resolve_skin_url(
-        username
-    )
-
-    if skin_url is None:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Could Not Find Skin For {username}"
-        )
-
-    try:
-        image = render_head(
-            skin_url
-        )
-
-        return Response(
-            content=image,
-            media_type="image/png",
-            headers={
-                "Cache-Control": "public, max-age=300"
-            }
-        )
-
-    except requests.RequestException as e:
-        raise HTTPException(
-            status_code=502,
-            detail=f"Failed to download skin: {e}"
-        )
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Failed to render skin: {e}"
-        )
 
 if __name__ == "__main__":
     uvicorn.run(
