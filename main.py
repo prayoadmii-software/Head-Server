@@ -3,6 +3,7 @@ import uvicorn
 import subprocess
 import os
 
+from prayoadmii_lib import console
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import Response, RedirectResponse, FileResponse
 
@@ -27,7 +28,7 @@ def favicon():
 @app.get("/", include_in_schema=False)
 def favicon():
     return RedirectResponse(
-        "https://github.com/noobs-create/Head-Server",
+        "https://github.com/prayoadmii-software/Head-Server",
         status_code=302
     )
 

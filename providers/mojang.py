@@ -2,7 +2,7 @@ import requests
 import base64
 import json
 
-from libs import console
+from prayoadmii_lib import console
 
 
 def resolve_mojang_url(username: str):

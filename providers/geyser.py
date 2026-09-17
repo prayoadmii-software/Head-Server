@@ -1,6 +1,6 @@
 import requests
 
-from libs import console
+from prayoadmii_lib import console
 
 def resolve_geyser_url(gamertag: str):
     console.log(f"Getting Skins For: {str(gamertag)}")

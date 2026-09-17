@@ -5,3 +5,4 @@ uvicorn[standard]
 colorama
 skinpy-extended
 pillow
+prayoadmii-lib

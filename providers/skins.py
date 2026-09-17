@@ -1,6 +1,7 @@
 import requests
 
-from libs import console
+from prayoadmii_lib import console
+
 from providers.geyser import resolve_geyser_url
 from providers.mojang import resolve_mojang_url
 
