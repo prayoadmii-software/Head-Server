@@ -13,6 +13,7 @@ port = 7500
 # mojang - For Official Skin Service
 # geyser - For Bedrock Skins (Via Geyser)
 # offline - Will Pick Minecraft Default Skins (https://minecraft.wiki/w/Skin#Default_skins)
+# If Nothing Can Be Found The Server Will Return 404
 
 # URL Placeholders:
 # {username} - Player Username
@@ -34,7 +35,7 @@ user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 # Settings For Bedrock Skins
 [bedrock]
 # If This Was Enabled
-# Players With Prefix floodgate_prefix Will Be Lookup In Geyser First
+# Players With Prefix In floodgate_prefix Will Be Lookup In Geyser First
 # If This Disabled The floodgate_prefix Config Is Ignored
 prefix_be_first = true
 
