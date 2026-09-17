@@ -160,5 +160,5 @@ cython_debug/
 #.idea/
 
 # Runtime Files That You Don't Need Them On GitHub
-/config.py # To Prevent Users Using Legacy Py Config
+/config.py
 /config.toml
