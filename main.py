@@ -1,8 +1,8 @@
-import requests
 import uvicorn
 import subprocess
 import os
 import importlib
+import tempfile
 
 from pathlib import Path
 from prayoadmii_lib import console

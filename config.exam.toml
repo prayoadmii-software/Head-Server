@@ -29,6 +29,11 @@ fallbacks = [
     "offline"
 ]
 
+# Request Configs
+[request]
+# Add Timeout So Skin Lookup Don't Took Too Long
+api_timeouts = 15
+
 # Some Skin API Might Need User Agent... This Is Default One
 user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36"
 
@@ -46,6 +51,9 @@ floodgate_prefix = "."
 
 # Caching Configs
 [cache]
+# Use Caching Or Not
+enabled = true
+
 # Purge All Files In The Temp Folder When The Server Start?
 # This Will Delete The Temp Folder And Recreate New One
 purge_on_start = true
