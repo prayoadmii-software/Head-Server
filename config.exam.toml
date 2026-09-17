@@ -1,0 +1,59 @@
+# Head Server Configs
+# A Config File For Head Server
+
+# Configs For Web Server Where The Web Host On
+# There Are No HTTPs Cert Config Here Please Use Some Reverse Proxy (Like Nginx) For That
+[web]
+bind = "0.0.0.0"
+port = 7500
+
+# Skins System Configs
+[skins]
+# Service:
+# mojang - For Official Skin Service
+# geyser - For Bedrock Skins (Via Geyser)
+# offline - Will Pick Minecraft Default Skins (https://minecraft.wiki/w/Skin#Default_skins)
+
+# URL Placeholders:
+# {username} - Player Username
+
+# A URL Or Service Of Default Service Where We Pull Skins First When Request Come In
+default = "mojang"
+
+# A List Of Fallback URL Or Service When The Default One Fail
+fallbacks = [
+    "http://skinsystem.ely.by/skins/{username}.png",
+    "https://auth.tlauncher.org/skin/fileservice/skins/skin_{username}.png",
+    "geyser",
+    "offline"
+]
+
+# Some Skin API Might Need User Agent... This Is Default One
+user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36"
+
+# Settings For Bedrock Skins
+[bedrock]
+# If This Was Enabled
+# Players With Prefix floodgate_prefix Will Be Lookup In Geyser First
+# If This Disabled The floodgate_prefix Config Is Ignored
+prefix_be_first = true
+
+# Floodgate Prefix
+# This Was Used To Find Bedrock Skins First When Username Have This Prefix
+# Default Is . Because It's Was Floodgate Default Config
+floodgate_prefix = "."
+
+# Caching Configs
+[cache]
+# Purge All Files In The Temp Folder When The Server Start?
+# This Will Delete The Temp Folder And Recreate New One
+purge_on_start = true
+
+# How Long Skins Files Will Be Stored In Cache Folder
+# In Days
+cache_store = 7
+
+# Name Of The Temp Folder Name
+# Linux: /tmp/<tmp_folder_name>
+# Windows: %temp%/<tmp_folder_name>
+tmp_folder_name = "head_server"
