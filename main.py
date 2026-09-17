@@ -2,10 +2,12 @@ import requests
 import uvicorn
 import subprocess
 import os
+import importlib
 
+from pathlib import Path
 from prayoadmii_lib import console
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import Response, RedirectResponse, FileResponse
+from fastapi.responses import Response, RedirectResponse
 
 from renderer.head18 import render_head
 
@@ -13,25 +15,56 @@ from providers import skins
 
 import config
 
-
 subprocess.run(args="cls" if os.name == "nt" else "clear", shell=True)
+
+BASE_DIR = Path(__file__).resolve().parent
+_LOADED_MODULES = set()
 
 app = FastAPI(
     title="Head Server",
     description="The All-In-One Minecraft Head/Face Skin Server!"
 )
 
-@app.get("/favicon.ico", include_in_schema=False)
-def favicon():
-    return FileResponse("favicon.ico")
+def LoadModules(app: FastAPI, project_base_dir: Path, base_path: str):
+    base_dir = Path(__file__).resolve().parent
+    target_dir = base_dir / base_path
 
-@app.get("/", include_in_schema=False)
-def favicon():
-    return RedirectResponse(
-        "https://github.com/prayoadmii-software/Head-Server",
-        status_code=302
-    )
+    for root, _, files in os.walk(target_dir):
+        for file in files:
+            if not file.endswith(".py") or file == "__init__.py":
+                continue
 
+            full_path = Path(root) / file
+
+            module_path = full_path.relative_to(base_dir)
+            module_path = ".".join(module_path.with_suffix("").parts)
+
+            if module_path in _LOADED_MODULES:
+                continue
+
+            try:
+                module = importlib.import_module(module_path)
+                setup = getattr(module, "setup", None)
+
+                if setup is None:
+                    console.warn(f"There Are No setup() In {module_path}")
+
+                    continue
+
+                if not callable(setup):
+                    console.warn(f"setup In {module_path} Is Not Callable!")
+
+                    continue
+
+                setup(app, project_base_dir)
+
+                _LOADED_MODULES.add(module_path)
+
+                console.info(f"Loaded Module: {module_path}")
+            except Exception as e:
+                console.warn(f"Failed To Load {module_path} As: {e}")
+
+LoadModules(app, BASE_DIR, "modules")
 
 @app.get("/{username}.png")
 def get_head(username: str, mode: str = Query(default=None)):
@@ -84,26 +117,6 @@ def get_head(username: str, mode: str = Query(default=None)):
             status_code=500,
             detail=f"Failed to render skin: {e}"
         )
-
-
-# @app.get("/{username}")
-# def get_redirect(username: str, just_redirect: bool = False):
-#     if not just_redirect:
-#         return get_head(username=username)
-
-#     skin_url = skins.resolve_skin_url(username)
-
-#     if skin_url is None:
-#         raise HTTPException(
-#             status_code=404,
-#             detail=f"Could Not Find Skin For: {str(username)}"
-#         )
-
-#     return RedirectResponse(
-#         url=skin_url,
-#         status_code=301
-#     )
-
 
 if __name__ == "__main__":
     uvicorn.run(
