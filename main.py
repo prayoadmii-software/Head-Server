@@ -64,7 +64,7 @@ def LoadModules(app: FastAPI, project_base_dir: Path, base_path: str):
             except Exception as e:
                 console.warn(f"Failed To Load {module_path} As: {e}")
 
-LoadModules(app, BASE_DIR, "modules")
+LoadModules(app, BASE_DIR, "endpoints")
 
 @app.get("/{username}.png")
 def get_head(username: str, mode: str = Query(default=None)):

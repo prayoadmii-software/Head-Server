@@ -33,13 +33,3 @@
 ```
 http://xxxx.xxx/PrayoadMii.png
 ```
-
-- **Get Skins With Mode**
-```
-http://xxxx.xxx/PrayoadMii.png?mode=head-1-8
-```
-
-- **Get Only Redirect Link (302 Response - May Not Good For Embedding On Websites With `<img>` Tag)**
-```
-http://xxxx.xxx/PrayoadMii?just_redirect=true
-```
