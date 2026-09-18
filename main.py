@@ -3,6 +3,7 @@ import subprocess
 import os
 import importlib
 import tempfile
+import shutil
 
 from pathlib import Path
 from prayoadmii_lib import console
@@ -15,6 +16,22 @@ configs = tomlcfg.load("config.toml")
 
 BASE_DIR = Path(__file__).resolve().parent
 _LOADED_MODULES = set()
+
+TMP_FOLDER = Path(tempfile.gettempdir()) / str(configs.get_config("cache.tmp_folder_name", "head_server"))
+
+if configs.get_config("cache.purge_on_start", True):
+    if TMP_FOLDER.exists():
+        try:
+            if TMP_FOLDER.is_dir():
+                shutil.rmtree(TMP_FOLDER)
+            else:
+                TMP_FOLDER.unlink()
+
+            console.log("Removed Temp Folder!")
+        except Exception as e:
+            console.warn(f"There's Problem While Removing Temp Folder As: {str(e)}")
+
+TMP_FOLDER.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(
     title="Head Server",

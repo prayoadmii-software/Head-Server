@@ -103,3 +103,9 @@ async def resolve_bedrock_skin(gamertag: str) -> tuple[bool, Path | None, str]:
     console.log(f"[SUCCESS] Resolved Bedrock Skin For {gamertag}")
 
     return True, DOWNLOAD_PATH, "Bedrock Skin Resolved Successfully!"
+
+async def main():
+    print(await resolve_bedrock_skin("LilacCard522"))
+
+import asyncio
+asyncio.run(main())

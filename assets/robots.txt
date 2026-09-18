@@ -1,0 +1,7 @@
+# robots.txt For Head Server Project
+
+# Allow Any Bot Agent
+User-agent: *
+
+# But Tell Them Nothing To See Here :>
+Disallow: /
