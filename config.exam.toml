@@ -29,6 +29,11 @@ fallbacks = [
     "offline"
 ]
 
+# Modify The Output Image Scale
+[output]
+weight = 128
+height = 128
+
 # Request Configs
 [request]
 # Add Timeout So Skin Lookup Don't Took Too Long
