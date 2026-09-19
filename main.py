@@ -78,6 +78,7 @@ def LoadModules(app: FastAPI, project_base_dir: Path, base_path: str):
                 console.warn(f"Failed To Load {module_path} As: {e}")
 
 LoadModules(app, BASE_DIR, "endpoints")
+LoadModules(app, BASE_DIR, "services")
 
 if __name__ == "__main__":
     uvicorn.run(
