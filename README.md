@@ -4,6 +4,14 @@
 
 ---
 
+# **Demo**
+
+**You Can Now Take A Demo At**
+
+**https://hs.praysys.qzz.io/demo.html**
+
+---
+
 # **Features**
 
 - **Load Face From Third Party Service *(In This Source [Ely.By](https://ely.by/) And [TLauncher](https://tlauncher.org/en/catalog/skins/nickname/) Are Included)***
@@ -16,7 +24,6 @@
 
 - **Legacy Skins Support *(Why - Notch Face Is Being Black When Rendered)***
 - **Face Caching**
-- **/demo.html**
 
 ---
 
