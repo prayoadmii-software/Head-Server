@@ -35,7 +35,10 @@ TMP_FOLDER.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(
     title="Head Server",
-    description="The All-In-One Minecraft Head/Face Skin Server!"
+    description="A Minecraft Head/Face Server Allow You To Embed Players Face On Websites And More",
+    docs_url=None,
+    openapi_url=None,
+    redoc_url=None
 )
 
 def LoadModules(app: FastAPI, project_base_dir: Path, base_path: str):

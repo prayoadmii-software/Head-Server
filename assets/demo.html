@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Head Server | Demo</title>
+        <link rel="stylesheet" href="https://cd.praysys.qzz.io/assets/css/fonts.css">
+
+        <style>
+            html {
+                overflow: hidden;
+            }
+
+            body {
+                margin: 0;
+                min-height: 100vh;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                background-color: #252525;
+                color: #ffffff;
+
+                font-family: Fredoka, sans-serif;
+                text-align: center;
+            }
+
+            .demo-zone {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+
+                padding: 32px;
+            }
+
+            input {
+                width: 260px;
+                padding: 10px 14px;
+
+                border: 1px solid #555;
+                border-radius: 8px;
+
+                background-color: #303030;
+                color: #ffffff;
+
+                font: inherit;
+                outline: none;
+            }
+
+            input:focus {
+                border-color: #ffffff;
+            }
+
+            button {
+                padding: 10px 18px;
+
+                border: none;
+                border-radius: 8px;
+
+                background-color: #ffffff;
+                color: #252525;
+
+                font: inherit;
+                cursor: pointer;
+            }
+
+            button:hover {
+                opacity: 0.85;
+            }
+
+            button:disabled {
+                opacity: 0.5;
+                cursor: wait;
+            }
+
+            #skin-preview {
+                width: 128px;
+                height: 128px;
+
+                image-rendering: pixelated;
+                object-fit: contain;
+
+                border-radius: 8px;
+            }
+
+            #timer {
+                opacity: 0.7;
+                font-size: 14px;
+            }
+
+            #status {
+                min-height: 20px;
+                opacity: 0.8;
+            }
+        </style>
+    </head>
+
+    <body>
+        <main class="demo-zone">
+            <h1>Head Server Demo</h1>
+
+            <input id="username" type="text" placeholder="Enter Minecraft Username" autocomplete="off">
+
+            <img id="skin-preview" src="/PrayoadMii.png" alt="Minecraft Skin Preview">
+
+            <button id="run-test">Get Face!</button>
+
+            <span id="timer">-- ms</span>
+            <span id="status"></span>
+        </main>
+
+        <script>
+            const usernameInput = document.getElementById("username");
+            const preview = document.getElementById("skin-preview");
+            const button = document.getElementById("run-test");
+            const timer = document.getElementById("timer");
+            const status = document.getElementById("status");
+
+            async function getFace() {
+                const username = usernameInput.value.trim();
+
+                if (!username) {
+                    status.textContent = "Please Enter A Username!";
+
+                    return;
+                }
+
+                button.disabled = true;
+                status.textContent = "Resolving...";
+                timer.textContent = "0 ms";
+
+                const start = performance.now();
+
+                const timerInterval = setInterval(() => {
+                    const elapsed = performance.now() - start;
+                    timer.textContent = `${elapsed.toFixed(0)} ms`;
+                }, 10);
+
+                try {
+                    const response = await fetch(
+                        `/${encodeURIComponent(username)}.png`
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+
+                    const blob = await response.blob();
+                    const imageURL = URL.createObjectURL(blob);
+
+                    preview.src = imageURL;
+
+                    preview.onload = () => {
+                        URL.revokeObjectURL(imageURL);
+                    };
+
+                    status.textContent = "Done! :3";
+                } catch (error) {
+                    status.textContent = `Failed: ${error.message}`;
+
+                    console.error(error);
+                } finally {
+                    clearInterval(timerInterval);
+
+                    const elapsed = performance.now() - start;
+                    timer.textContent = `${elapsed.toFixed(0)} ms`;
+
+                    button.disabled = false;
+                }
+            }
+
+            button.addEventListener("click", getFace);
+
+            usernameInput.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    getFace();
+                }
+            });
+        </script>
+    </body>
+</html>
