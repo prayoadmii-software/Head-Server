@@ -1,7 +1,7 @@
 import os
 
 from pathlib import Path
-from fastapi import FastAPI, status
+from fastapi import FastAPI, status, BackgroundTasks
 from fastapi.responses import FileResponse, JSONResponse
 
 from scripts import skin_resolver
@@ -9,7 +9,7 @@ from renderer.modern import iilayer
 
 def setup(fapi: FastAPI, BASE_DIR: Path):
     @fapi.get(path="/{username}.png")
-    async def skin(username: str):
+    async def skin(username: str, background_tasks: BackgroundTasks):
         success, skin_path, message = await skin_resolver.resolve_skin(username)
 
         if not success or skin_path is None:
@@ -24,6 +24,8 @@ def setup(fapi: FastAPI, BASE_DIR: Path):
         success, face_path, message = await iilayer.render_skin_face(skin_path)
 
         if not success or face_path is None:
+            skin_path.unlink(missing_ok=True)
+
             return JSONResponse(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 content={
@@ -32,7 +34,8 @@ def setup(fapi: FastAPI, BASE_DIR: Path):
                 },
             )
 
-        os.remove(skin_path)
+        background_tasks.add_task(skin_path.unlink, missing_ok=True)
+        background_tasks.add_task(face_path.unlink, missing_ok=True)
 
         return FileResponse(
             path=face_path,
