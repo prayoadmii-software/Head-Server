@@ -122,6 +122,19 @@ async def resolve_skin(username: str) -> tuple[bool, Path | None, str]:
         *fallbacks,
     ]
 
+    be_prefix_first = config.get_config("bedrock.prefix_be_first", True)
+    be_floodgate_prefix = config.get_config("bedrock.floodgate_prefix", ".")
+
+    if be_prefix_first and username.startswith(str(be_floodgate_prefix)):
+        username = username.removeprefix(str(be_floodgate_prefix))
+
+        success, path, message = await resolve_service("geyser", username)
+
+        if success:
+            return True, path, message
+
+    username = username.removeprefix(str(be_floodgate_prefix))
+
     for source in sources:
         if not isinstance(source, str):
             console.warn(f"Ignoring invalid skin source: {source!r}")
