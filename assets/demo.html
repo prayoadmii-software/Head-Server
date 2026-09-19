@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Head Server | Demo</title>
+
         <link rel="stylesheet" href="https://cd.praysys.qzz.io/assets/css/fonts.css">
 
         <style>
@@ -22,6 +23,10 @@
 
                 font-family: Fredoka, sans-serif;
                 text-align: center;
+            }
+            
+            a {
+                color: #ffffff !important;
             }
 
             .demo-zone {
@@ -107,6 +112,13 @@
 
             <span id="timer">-- ms</span>
             <span id="status"></span>
+
+            <a id="resault-url" href="" target="_blank"></a>
+
+            <br>
+            <br>
+
+            <a href="/" target="_blank">View This On <b>GitHub</b></a>
         </main>
 
         <script>
@@ -115,6 +127,7 @@
             const button = document.getElementById("run-test");
             const timer = document.getElementById("timer");
             const status = document.getElementById("status");
+            const link = document.getElementById("resault-url");
 
             async function getFace() {
                 const username = usernameInput.value.trim();
@@ -155,6 +168,9 @@
                     };
 
                     status.textContent = "Done! :3";
+
+                    link.href = `/${encodeURIComponent(username)}.png`;
+                    link.textContent = `/${encodeURIComponent(username)}.png`;
                 } catch (error) {
                     status.textContent = `Failed: ${error.message}`;
 
