@@ -7,7 +7,7 @@ from pathlib import Path
 from prayoadmii_lib import console
 from prayoadmii_lib.configlib import tomlcfg
 
-async def resolve_bedrock_skin(gamertag: str) -> tuple[bool, Path | None, str]:
+async def resolve(gamertag: str) -> tuple[bool, Path | None, str]:
     CONFIG = tomlcfg.load("config.toml")
 
     TMP_DIR = CONFIG.get_config("cache.tmp_folder_name", "head_server")

@@ -28,7 +28,7 @@ SKIN_LOCATION = [
     "wide/zuri",
 ]
 
-async def resolve_offline_skin(username: str) -> tuple[bool, Path | None, str]:
+async def resolve(username: str) -> tuple[bool, Path | None, str]:
     CONFIG = tomlcfg.load("config.toml")
     
     TMP_DIR = CONFIG.get_config("cache.tmp_folder_name", "head_server")
