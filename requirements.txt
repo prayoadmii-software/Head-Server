@@ -1,6 +1,7 @@
 requests
 httpx
 fastapi
+fastapi[standard]
 uvicorn
 uvicorn[standard]
 colorama
